@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {gensalt, hash} from 'bcrypt';
+import {genSalt, hash} from 'bcrypt';
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    latName: {
+    lastName: {
         type: String,
         required: false,
     },
