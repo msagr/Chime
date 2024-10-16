@@ -9,12 +9,14 @@ import { toast } from 'sonner';
 import { apiClient } from "@/lib/api-client";
 import { SIGNUP_ROUTE } from '@/utils/constants';
 import { LOGIN_ROUTE } from '@/utils/constants';
+import { useAppStore } from "@/store";
 
 const Auth = () => {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setconfirmPassword] = useState("")
+  const navigate = useNavigate();
+  const { setUserInfo } = useAppStore();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setconfirmPassword] = useState("");
 
   const validateSignUp = () => {
     if(!email.length){
@@ -30,7 +32,7 @@ const Auth = () => {
       return false;
     }
     return true;
-  }
+  };
 
   const validateLogin = () => {
     if(!email.length){
@@ -42,7 +44,7 @@ const Auth = () => {
       return false;
     }
     return true;
-  }
+  };
 
   const handleLogin = async () => {
     if(validateLogin()){
@@ -50,6 +52,7 @@ const Auth = () => {
         email, password 
       }, { withCredentials: true });
       if(response.data.user.id){
+        setUserInfo(response.data.user);
         if(response.data.user.profileSetup){
           navigate("/chat");
         }
@@ -58,7 +61,7 @@ const Auth = () => {
         }
       }
     }
-  }
+  };
 
   const handleSignup = async () => {
     if(validateSignUp()){
@@ -66,10 +69,11 @@ const Auth = () => {
         email, password 
       }, { withCredentials: true });
       if(response.status === 201){
+        setUserInfo(response.data.user);
         navigate("/profile");
       }
     }
-  }
+  };
 
   return (
     <div className="h-[100vh] w-[100vw] flex items-center justify-center">
@@ -112,8 +116,8 @@ const Auth = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Auth
+export default Auth;
 
