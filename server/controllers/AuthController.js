@@ -150,27 +150,20 @@ export const addProfileImage = async (request, response, next) => {
 export const removeProfileImage = async (request, response, next) => {
     try {
         const { userId } = request;
-        const { firstName, lastName, color } = request.body;
+        const user = await User.findById(userId);
 
-        if(!firstName || !lastName) {
-            return response.status(400).send("firstname lastname and color is required.");
+        if(!user){
+            return response.status(404).send("User not found.");
         }
 
-        const userData = await User.findByIdAndUpdate(
-            userId, {
-                firstName, lastName, color, profileSetup: true
-            }, {new: true, runValidators: true}
-        );
+        if(user.image){
+            unlinkSync(user.image);
+        }
 
-        return response.status(200).json({
-            id: userData.id,
-            email: userData.email,
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            image: userData.image,
-            profileSetup: userData.profileSetup,
-            color: userData.color,
-        }); // here, wrapping it inside user object was creating problem.
+        user.image = null;
+        await user.save();
+
+        return response.status(200).send("Profile image removed successfully.");
     } catch(error){
         console.log({ error });
         return response.status(500).send("Internal Server Error");
