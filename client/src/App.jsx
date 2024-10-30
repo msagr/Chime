@@ -1,5 +1,3 @@
-import React from 'react'
-import {Button, buttonVariants} from '@/components/ui/button'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Auth from './pages/auth';
 import Chat from './pages/chat';
@@ -9,12 +7,14 @@ import { GET_USER_INFO } from './utils/constants';
 import { useState, useEffect } from 'react';
 import { apiClient } from './lib/api-client';
 
+// eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ children }) => {
   const { userInfo } = useAppStore();
   const isAuthenticated = !!userInfo;
   return isAuthenticated ? children : <Navigate to = "/auth" />;
 };
 
+// eslint-disable-next-line react/prop-types
 const AuthRoute = ({ children }) => {
   const { userInfo } = useAppStore();
   const isAuthenticated = !!userInfo;
@@ -24,6 +24,7 @@ const AuthRoute = ({ children }) => {
 function App() {
 
   const { userInfo, setUserInfo } = useAppStore();
+  // eslint-disable-next-line no-unused-vars
   const [ loading, setLoading ] = useState(true);
   
   useEffect(() => {
@@ -51,7 +52,7 @@ function App() {
     } else {
       setLoading(true);
     }
-  }, { userInfo, setUserInfo });
+  }, [userInfo, setUserInfo]);
 
   return (
     <div>
