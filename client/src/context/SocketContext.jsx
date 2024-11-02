@@ -3,6 +3,7 @@ import { useAppStore } from "@/store";
 import { io } from "socket.io-client";
 import { HOST } from "@/utils/constants";
 
+
 const SocketContext = createContext(null);
 
 export const useSocket = () => {
@@ -23,6 +24,18 @@ export const SocketProvider = ({ children }) => {
             socket.current.on("connect", () => {
                 console.log("Connected to socket server");
             });
+
+            const handleReceiveMessage = (message) => {
+                const { selectedChatData, selectedChatType, addMessage } = useAppStore.getState();
+                
+                if(selectedChatType !== undefined && (selectedChatData._id === message.sender._id || selectedChatData._id === message.recipient._id)) {
+                    console.log("message rcv", message);
+                    addMessage(message);
+                }
+        
+            };
+
+            socket.current.on("receiveMessage", handleReceiveMessage);
 
             return () => {
                 socket.current.disconnect();
