@@ -1,5 +1,6 @@
 import Message from "../models/MessagesModel.js";
 import { mkdirSync } from "fs";
+import { renameSync } from "fs";
 
 export const getMessages = async (request, response, next) => {
     try {
@@ -31,7 +32,7 @@ export const getMessages = async (request, response, next) => {
 
 export const uploadFile = async (request, response, next) => {
     try {
-        if(request.file) {
+        if(!request.file) {
             return response.status(400).send("File is required");
         }
         const date = Date.now();

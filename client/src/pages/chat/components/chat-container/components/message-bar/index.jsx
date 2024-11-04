@@ -5,6 +5,8 @@ import { RiEmojiStickerLine } from "react-icons/ri";
 import EmojiPicker from 'emoji-picker-react';
 import { useAppStore } from "@/store";
 import { useSocket } from "@/context/SocketContext";
+import { apiClient } from "@/lib/api-client";
+import { UPLOAD_FILE_ROUTE } from "@/utils/constants";
 
 const MessageBar = () => {
   const emojiRef = useRef();
@@ -48,10 +50,25 @@ const MessageBar = () => {
     }
   };
 
-  const handleAttachmentChange = async () => {
+  const handleAttachmentChange = async (event) => {
     try {
         const file = event.target.files[0];
-        console.log({file});
+        if(file) {
+            const formData = new FormData();
+            formData.append("file", file);
+            const response = await apiClient.post(UPLOAD_FILE_ROUTE, formData, {withCredentials: true});
+            if(response.status === 200 && response.data) {
+                if(selectedChatType === "contact") {
+                    socket.emit("sendMessage", {
+                        sender: userInfo.id,
+                        content: undefined,
+                        recipient: selectedChatData._id,
+                        messageType: "file",
+                        fileUrl: response.data.filePath,
+                    });
+                }
+            }
+        }
     } catch (error) {
         console.log({ error });
     }
