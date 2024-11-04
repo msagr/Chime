@@ -23,6 +23,7 @@ app.use(
 );
 
 app.use("/uploads/profiles", express.static("uploads/profiles")); // whenever the request comes to this URL, need to serve static files from directory to this request.
+app.use("/uploads/files", express.static("uploads/files"));
 
 app.use(cookieParser());
 app.use(express.json());
