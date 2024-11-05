@@ -5,6 +5,7 @@ import { apiClient } from "@/lib/api-client";
 import { GET_DM_CONTACTS_ROUTES } from "@/utils/constants";
 import ContactList from "@/components/contact-list";
 import { useAppStore } from "@/store";
+import CreateChannel from "./components/create-channel";
 
 const ContactsContainer = () => {
   const { setDirectMessagesContacts, directMessagesContacts } = useAppStore();
@@ -34,6 +35,7 @@ const ContactsContainer = () => {
       <div className="my-5">
         <div className="flex items-center justify-between pr-10">
           <Title text="Channels" />
+          <CreateChannel />
         </div>
       </div>
       <ProfileInfo />
