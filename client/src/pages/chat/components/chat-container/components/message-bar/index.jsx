@@ -45,12 +45,12 @@ const MessageBar = () => {
         socket.emit("send-channel-message", {
             sender: userInfo.id,
             content: message,
-            recipient: message,
             messageType: "text",
             fileUrl: undefined,
             channelId: selectedChatData._id,
         });
     }
+    setMessage("");
   };
 
   const handleAttachmentClick = () => {
@@ -87,11 +87,10 @@ const MessageBar = () => {
                         sender: userInfo._id,
                         content: undefined,
                         messageType: "file",
-                        fileUrl: undefined,
+                        fileUrl: response.data.filePath,
                         channelId: selectedChatData._id,
                     });
                 }
-                setMessage("");
             }
         }
     } catch (error) {

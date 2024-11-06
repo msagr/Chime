@@ -50,9 +50,13 @@ const setupSocket = (server) => {
             fileUrl,
         });
 
-        const messageData = await Message.findById(createdMessage._id).populate("sender", "id email firstName lastName image color").exec();
+        console.log(createdMessage);
+        console.log(channelId);
 
-        await Channel.findByIdandUpdate(channelId, {
+        const messageData = await Message.findById(createdMessage._id).populate("sender", "id email firstName lastName image color").exec();
+        console.log(messageData);
+
+        await Channel.findByIdAndUpdate(channelId, {
             $push: { messages: createdMessage._id },
         });
 
@@ -65,12 +69,11 @@ const setupSocket = (server) => {
                 if(memberSocketId) {
                     io.to(memberSocketId).emit("receive-channel-message", finalData);
                 }
-
-                const adminSocketId = userSocketMap.get(channel.admin._id.toString());
-                if(adminSocketId) {
-                    io.to(adminSocketId).emit("receive-channel-message", finalData);
-                }
             });
+            const adminSocketId = userSocketMap.get(channel.admin._id.toString());
+            if(adminSocketId) {
+                io.to(adminSocketId).emit("receive-channel-message", finalData);
+            }
         }
     };
 
