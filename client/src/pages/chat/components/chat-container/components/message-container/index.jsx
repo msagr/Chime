@@ -141,7 +141,7 @@ const MessageContainer = () => {
           message.messageType === "text" && (
             <div className={`${message.sender._id === userInfo.id ? 
               "bg-[#8417ff]/5 text-[8417ff]/90 border-[#8417ff]/50" : "bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20"
-              } border inline-block p-4 rounded my-1 max-w-[50%] break-words`}>
+              } border inline-block p-4 rounded my-1 max-w-[50%] break-words ml-9`}>
                 {message.content}
             </div>  
       )
@@ -166,7 +166,7 @@ const MessageContainer = () => {
     </Avatar>
     <span className="text-sm text-white/60">{`${message.sender.firstName} ${message.sender.lastname}`}</span>
     <span className="text-xs text-white/60 mt-1">{moment(message.timestamp).format("LT")}</span>
-    </div> : (<span className="text-xs text-white/60 mt-1">{moment(message.timestamp).format("LT")}</span>
+    </div> : (<div className="text-xs text-white/60 mt-1">{moment(message.timestamp).format("LT")}</div>
 
   )}
       </div>
