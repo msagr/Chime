@@ -50,8 +50,6 @@ const setupSocket = (server) => {
             fileUrl,
         });
 
-        console.log(createdMessage);
-        console.log(channelId);
 
         const messageData = await Message.findById(createdMessage._id).populate("sender", "id email firstName lastName image color").exec();
         console.log(messageData);
