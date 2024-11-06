@@ -9,6 +9,9 @@ import { MdFolderZip } from "react-icons/md";
 import { IoMdArrowRoundDown } from "react-icons/io";
 import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { AvatarImage } from "@radix-ui/react-avatar";
+import { getColor } from "@/lib/utils";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
@@ -143,6 +146,29 @@ const MessageContainer = () => {
             </div>  
       )
     }
+    
+  {
+    message.sender._id !== userInfo.id ? <div className="flex items-center justify-start gap-3"><Avatar className="h-8 w-8 rounded-full overflow-hidden">
+    {message.sender.image && (
+        <AvatarImage
+            src={`${HOST}/${message.sender.image}`}
+            alt="profile"
+            className="object-cover w-full h-full bg-black"
+        />
+    )} 
+        <AvatarFallback
+            className={`uppercase h-8 w-8 text-lg flex items-center justify-center rounded-full ${getColor(
+            message.sender.color
+            )}`}
+        >
+          {message.sender.firstName ? message.sender.firstName.split("").shift() : message.sender.email.split("").shift()}
+        </AvatarFallback>
+    </Avatar>
+    <span className="text-sm text-white/60">{`${message.sender.firstName} ${message.sender.lastname}`}</span>
+    <span className="text-xs text-white/60 mt-1">{moment(message.timestamp).format("LT")}</span>
+    </div> : (<span className="text-xs text-white/60 mt-1">{moment(message.timestamp).format("LT")}</span>
+
+  )}
       </div>
     )
   }
