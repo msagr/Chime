@@ -12,7 +12,7 @@ export const useSocket = () => {
 
 export const SocketProvider = ({ children }) => {
     const socket = useRef();
-    const { userInfo, addChannelInChannelList } = useAppStore();
+    const { userInfo, addChannelInChannelList, addContactsInDMContacts } = useAppStore();
 
     useEffect(() => {
         if(userInfo) {
@@ -32,7 +32,7 @@ export const SocketProvider = ({ children }) => {
                     console.log("message rcv", message);
                     addMessage(message);
                 }
-        
+                addContactsInDMContacts(message);
             };
 
             const handleReceiveChannelMessage = (message) => {
