@@ -12,7 +12,7 @@ export const useSocket = () => {
 
 export const SocketProvider = ({ children }) => {
     const socket = useRef();
-    const { userInfo } = useAppStore();
+    const { userInfo, addChannelInChannelList } = useAppStore();
 
     useEffect(() => {
         if(userInfo) {
@@ -40,6 +40,7 @@ export const SocketProvider = ({ children }) => {
                 if(selectedChatType !== undefined && selectedChatData._id === message.channelId) {
                     addMessage(message);
                 }
+                addChannelInChannelList(message);
             };
 
             socket.current.on("receiveMessage", handleReceiveMessage);

@@ -48,7 +48,7 @@ const MessageContainer = () => {
         console.log({ error });
       }
     }
-    if(selectedChatData._id) {
+    if(selectedChatData?._id) {
       if(selectedChatType === "contact") {
         getMessages();
       }
