@@ -8,8 +8,11 @@ import contactRoutes from "./routes/ContactRoutes.js";
 import setupSocket from "./socket.js";
 import messagesRoutes from "./routes/MessagesRoutes.js";
 import channelRoutes from "./routes/ChannelRoutes.js";
+import path from "path";
 
-dotenv.config();
+const _dirname = path.resolve();
+
+dotenv.config({ path: _dirname + '/server/.env'});
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -33,6 +36,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/contacts", contactRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/channel", channelRoutes);
+app.use(express.static(path.join(_dirname, "/client/dist")));
+app.get("*", (_ , res) => {
+    res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
+});
 
 const server = app.listen(port, ()=>{
     console.log(`Server is running at http://localhost:${port}`);
