@@ -9,7 +9,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
-import { ADD_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE, REMOVE_PROFILE_IMAGE_ROUTE } from "@/utils/constants";
+import {
+  ADD_PROFILE_IMAGE_ROUTE,
+  UPDATE_PROFILE_ROUTE,
+  REMOVE_PROFILE_IMAGE_ROUTE,
+} from "@/utils/constants";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -22,36 +26,41 @@ const Profile = () => {
   const fileInput = useRef(null);
 
   useEffect(() => {
-    if(userInfo.profileSetup) {
+    if (userInfo.profileSetup) {
       setFirstName(userInfo.firstName);
       setLastName(userInfo.lastName);
       setSelectedColor(userInfo.color);
     }
-    if(userInfo.image){
+    if (userInfo.image) {
       setImage(`https://realtime-chat-65rx.onrender.com/${userInfo.image}`);
     }
-  }, [userInfo]); 
+  }, [userInfo]);
 
   const validateProfile = () => {
-    if(!firstName) {
+    if (!firstName) {
       toast.error("First Name is required.");
       return false;
     }
-    if(!lastName){
+    if (!lastName) {
       toast.error("Last Name is required.");
       return false;
     }
     return true;
-  }
+  };
 
   const saveChanges = async () => {
-    if(validateProfile()){
+    if (validateProfile()) {
       try {
-        const response = await apiClient.post(UPDATE_PROFILE_ROUTE, {
-          firstName, lastName, color: selectedColor },
+        const response = await apiClient.post(
+          UPDATE_PROFILE_ROUTE,
+          {
+            firstName,
+            lastName,
+            color: selectedColor,
+          },
           { withCredentials: true }
         );
-        if(response.status == 200 && response.data) {
+        if (response.status == 200 && response.data) {
           setUserInfo({ ...response.data });
           toast.success("Profile updated successfully.");
           navigate("/chat");
@@ -63,12 +72,12 @@ const Profile = () => {
   };
 
   const handleNavigate = () => {
-    if(userInfo.profileSetup) {
+    if (userInfo.profileSetup) {
       navigate("/chat");
     } else {
       toast.error("Please setup profile.");
     }
-  }
+  };
 
   const handleFileInputClick = () => {
     fileInput.current.click();
@@ -76,15 +85,15 @@ const Profile = () => {
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    if(file){
+    if (file) {
       const formData = new FormData();
       formData.append("profile-image", file);
       const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
         withCredentials: true,
       });
-      if(response.status == 200 && response.data.image){
-        setUserInfo( { ...userInfo, image: response.data.image }); // setting image in zustand store.
-        toast.success("Image updated successfully.")
+      if (response.status == 200 && response.data.image) {
+        setUserInfo({ ...userInfo, image: response.data.image }); // setting image in zustand store.
+        toast.success("Image updated successfully.");
       }
     }
   };
@@ -94,12 +103,12 @@ const Profile = () => {
       const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE, {
         withCredentials: true,
       });
-      if(response.status === 200){
-        setUserInfo({...userInfo, image: null});
+      if (response.status === 200) {
+        setUserInfo({ ...userInfo, image: null });
         toast.success("Image removed successfully");
         setImage(null);
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -108,7 +117,10 @@ const Profile = () => {
     <div className="bg-[#1b1c24] h-[100vh] w-[100vw] flex items-center justify-center flex-col gap-10">
       <div className="flex flex-col gap-10 w-[80vw] md:w-max">
         <div>
-          <IoArrowBack className="text-4xl lg:text-6xl text-white/90 cursor-pointer"  onClick={handleNavigate} />
+          <IoArrowBack
+            className="text-4xl lg:text-6xl text-white/90 cursor-pointer"
+            onClick={handleNavigate}
+          />
         </div>
         <div className="grid grid-cols-2">
           <div
@@ -136,8 +148,10 @@ const Profile = () => {
               )}
             </Avatar>
             {hovered && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full cursor-pointer"
-              onClick={image ? handleDeleteImage : handleFileInputClick}>
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full cursor-pointer"
+                onClick={image ? handleDeleteImage : handleFileInputClick}
+              >
                 {image ? (
                   <FaTrash className="text-white text-3xl cursor-pointer" />
                 ) : (
@@ -145,7 +159,14 @@ const Profile = () => {
                 )}
               </div>
             )}
-            <input type="file" ref={fileInput} className="hidden" onChange={handleImageChange} name="profile-image" accept=".png, .jpg, .jpeg, .svg, .webp" />
+            <input
+              type="file"
+              ref={fileInput}
+              className="hidden"
+              onChange={handleImageChange}
+              name="profile-image"
+              accept=".png, .jpg, .jpeg, .svg, .webp"
+            />
           </div>
           <div className="flex min-w-32 md:min-w-64 flex-col gap-5 text-white items-center justify-center">
             <div className="w-full">
@@ -176,20 +197,28 @@ const Profile = () => {
               />
             </div>
             <div className="w-full flex gap-5">
-          {colors.map((color, index) => (
-            <div
-              className={`${color} h-8 w-8 rounded-full cursor-pointer transition-all duration-300 ${
-                selectedColor === index ? "outline outline-white outline-1" : ""
-              }`}
-              key={index}
-              onClick={() => setSelectedColor(index)}
-            ></div>
-             ))}
+              {colors.map((color, index) => (
+                <div
+                  className={`${color} h-8 w-8 rounded-full cursor-pointer transition-all duration-300 ${
+                    selectedColor === index
+                      ? "outline outline-white outline-1"
+                      : ""
+                  }`}
+                  key={index}
+                  onClick={() => setSelectedColor(index)}
+                ></div>
+              ))}
             </div>
           </div>
         </div>
-          <div className="w-full">
-            <Button className="h-16 w-full bg-purple-700 hover:bg-purple-900 transition-all duration-300" onClick={saveChanges}> Save Changes </Button>
+        <div className="w-full">
+          <Button
+            className="h-16 w-full bg-purple-700 hover:bg-purple-900 transition-all duration-300"
+            onClick={saveChanges}
+          >
+            {" "}
+            Save Changes{" "}
+          </Button>
         </div>
       </div>
     </div>

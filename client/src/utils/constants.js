@@ -1,6 +1,6 @@
 // All the utility functions.
 
-export const HOST = 'https://realtime-chat-65rx.onrender.com';
+export const HOST = "https://realtime-chat-65rx.onrender.com";
 export const AUTH_ROUTES = `${HOST}/api/auth`;
 export const SIGNUP_ROUTE = `${AUTH_ROUTES}/signup`;
 export const LOGIN_ROUTE = `${AUTH_ROUTES}/login`;
@@ -20,6 +20,6 @@ export const GET_DM_CONTACTS_ROUTES = `${CONTACTS_ROUTES}/get-contacts-for-dm`;
 export const UPLOAD_FILE_ROUTE = `${MESSAGES_ROUTES}/upload-file`;
 
 export const CHANNEL_ROUTES = "api/channel";
-export const CREATE_CHANNEL_ROUTE = `${CHANNEL_ROUTES}/create-channel`;  
+export const CREATE_CHANNEL_ROUTE = `${CHANNEL_ROUTES}/create-channel`;
 export const GET_USER_CHANNELS_ROUTE = `${CHANNEL_ROUTES}/get-user-channels`;
 export const GET_CHANNEL_MESSAGES = `${CHANNEL_ROUTES}/get-channel-messages`;
