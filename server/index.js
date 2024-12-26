@@ -20,7 +20,7 @@ const databaseURL = process.env.DATABASE_URL;
 
 app.use(
     cors({
-        origin: [process.env.ORIGIN],
+        origin: [process.env.ORIGIN, 'https://realtime-chat-65rx.onrender.com'],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         credentials: true,
     })
