@@ -46,7 +46,7 @@ const Auth = () => {
 
   const handleLogin = async () => {
     if(validateLogin()){
-      const response = await apiClient.post('http://localhost:3000/api/auth/login', { 
+      const response = await apiClient.post('https://realtime-chat-65rx.onrender.com/api/auth/login', { 
         email, password 
       }, { withCredentials: true });
       if(response.data.user.id){
@@ -63,7 +63,7 @@ const Auth = () => {
 
   const handleSignup = async () => {
     if(validateSignUp()){
-      const response = await apiClient.post('http://localhost:3000/api/auth/signup', { 
+      const response = await apiClient.post('https://realtime-chat-65rx.onrender.com/api/auth/signup', { 
         email, password 
       }, { withCredentials: true });
       if(response.status === 201){

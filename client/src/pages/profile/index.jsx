@@ -28,7 +28,7 @@ const Profile = () => {
       setSelectedColor(userInfo.color);
     }
     if(userInfo.image){
-      setImage(`http://localhost:3000/${userInfo.image}`);
+      setImage(`https://realtime-chat-65rx.onrender.com/${userInfo.image}`);
     }
   }, [userInfo]); 
 
